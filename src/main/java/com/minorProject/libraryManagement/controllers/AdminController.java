@@ -14,6 +14,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
+
     @PostMapping("/admin")
     public void createAdmin(@Valid @RequestBody CreateAdminRequest adminRequest){
         adminService.createAdmin(adminRequest);

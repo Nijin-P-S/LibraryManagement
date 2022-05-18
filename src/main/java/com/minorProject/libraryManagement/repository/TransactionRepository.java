@@ -4,6 +4,7 @@ import com.minorProject.libraryManagement.models.Transaction;
 import com.minorProject.libraryManagement.models.TransactionStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction,Integer> {
