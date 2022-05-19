@@ -15,27 +15,20 @@ import java.util.UUID;
 public class PlaceRequest {
 
     @NotNull
-    private Integer studentId;
-    @NotNull
     private Integer bookId;
+
     @NotNull
     private String requestType;
 
-    public Request toRequest(){
-        return Request.builder()
-                .book(this.bookId==null?null: Book.builder().id(this.bookId).build())
-                .student(this.studentId==null?null: Student.builder().id(this.studentId).build())
-                .requestType(RequestType.valueOf(this.requestType)) //valueof to convert String to Enum
-                .requestStatus(RequestStatus.PENDING)
-                .requestId(UUID.randomUUID().toString())
-                .build();
+    public Request toRequest(Integer studentId){
+        return toRequest(null, studentId);
     }
 
-    public Request toRequest(Admin admin){
+    public Request toRequest(Admin admin, Integer studentId){
         return Request.builder()
                 .admin(admin)
                 .book(this.bookId == null ?null: Book.builder().id(this.bookId).build())
-                .student(this.studentId == null?null:Student.builder().id(this.studentId).build())
+                .student(studentId == null?null:Student.builder().id(studentId).build())
                 .requestType(RequestType.valueOf(this.requestType)) //valueof to convert String to Enum
                 .requestStatus(RequestStatus.PENDING)
                 .requestId(UUID.randomUUID().toString())

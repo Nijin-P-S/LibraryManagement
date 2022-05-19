@@ -3,10 +3,7 @@ package com.minorProject.libraryManagement.service;
 import com.minorProject.libraryManagement.Requests.CreateAdminRequest;
 import com.minorProject.libraryManagement.Requests.ProcessRequest;
 import com.minorProject.libraryManagement.Responses.ProcessResponse;
-import com.minorProject.libraryManagement.models.Admin;
-import com.minorProject.libraryManagement.models.Request;
-import com.minorProject.libraryManagement.models.RequestStatus;
-import com.minorProject.libraryManagement.models.Student;
+import com.minorProject.libraryManagement.models.*;
 import com.minorProject.libraryManagement.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +25,17 @@ public class AdminService {
     @Autowired
     TransactionService transactionService;
 
-    public void createAdmin(CreateAdminRequest adminRequest) {
-        adminRepository.save(adminRequest.to());
+    @Autowired
+    UserService userService;
+
+    public void createAdmin(CreateAdminRequest createAdminRequest) {
+
+        User savedUser = userService.saveUser(createAdminRequest.toUser());
+
+        adminRepository.save(createAdminRequest.to(savedUser));
     }
 
-    public Admin getAdmin(int id) {
+    public Admin getAdminById(int id) {
         return adminRepository.findById(id).orElse(null);
     }
 
@@ -40,14 +43,14 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public ProcessResponse processRequest(ProcessRequest processRequest) throws Exception {
+    public ProcessResponse processRequest(ProcessRequest processRequest, Integer adminId) throws Exception {
         Request request = requestService.getRequestById(processRequest.getRequestId());
         if(request==null) {
             throw new Exception("Request doesn't exist");
         }
 
-        if(request.getAdmin()==null || request.getAdmin().getId()!= processRequest.getAdminId()){
-            throw new Exception("This request is not assigned to this Admin "+processRequest.getAdminId());
+        if(request.getAdmin()==null || request.getAdmin().getId()!= adminId){
+            throw new Exception("This request is not assigned to this Admin "+adminId);
         }
 
         if(!request.getRequestStatus().equals(RequestStatus.PENDING)){

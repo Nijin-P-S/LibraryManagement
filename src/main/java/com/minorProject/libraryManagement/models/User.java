@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Entity     ----Since we dont wanna create new table User
-//@Builder
+@Entity     //----Since we dont wanna create new table User
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Value("{$authorities.delimiter}")
     private String delimiter;
 
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
     private String authorities;

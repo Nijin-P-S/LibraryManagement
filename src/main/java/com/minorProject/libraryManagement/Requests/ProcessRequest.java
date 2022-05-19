@@ -14,9 +14,6 @@ import javax.validation.constraints.NotNull;
 public class ProcessRequest {
 
     @NotNull
-    private int adminId;
-
-    @NotNull
     private int requestId;
 
     @NotNull
