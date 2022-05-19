@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Student {
+public class Student extends User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +37,14 @@ public class Student {
 
     @CreationTimestamp
     private Date createdOn;
+
+    @OneToOne
+    @JoinColumn
+    @JsonIgnoreProperties("student")
+    private User user;
+
 }
+
+
+
+

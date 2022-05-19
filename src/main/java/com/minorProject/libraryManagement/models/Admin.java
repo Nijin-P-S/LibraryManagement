@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Admin {
+public class Admin extends User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +33,9 @@ public class Admin {
 
     @CreationTimestamp
     private Date createdOn;
+
+    @OneToOne
+    @JoinColumn
+    @JsonIgnoreProperties("admin")
+    private User user;
 }

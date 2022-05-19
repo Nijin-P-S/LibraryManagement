@@ -15,16 +15,25 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    //Not authenticated
     @PostMapping("/student")
     public void createStudent(@Valid @RequestBody StudentCreateRequest studentRequest){
         studentService.createStudent(studentRequest);
     }
 
-    @GetMapping("/student/{studentId}")
+    //Admin
+    @GetMapping("/studentById/{studentId}")
     public Student getStudent(@PathVariable("studentId") int id){
         return studentService.getStudentById(id);
     }
 
+    //Student
+    @GetMapping("/student")
+    public Student getStudent(){
+        return null;
+    }
+
+    //Student
     @PostMapping("/student/request")
     public String placeRequest(@Valid @RequestBody PlaceRequest placeRequest){
         return studentService.placeRequest(placeRequest);

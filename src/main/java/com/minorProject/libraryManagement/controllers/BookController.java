@@ -20,11 +20,13 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+    //Admin
     @PostMapping("/book")
     public Book createBook(@Valid @RequestBody BookCreateRequest bookCreateRequest){
         return bookService.createBook(bookCreateRequest);
     }
 
+    //Student + Admin
     //Filteration process
     @GetMapping("/book")
     public List<BookResponse> getBook(@RequestParam("filterType") String filterType,

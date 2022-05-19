@@ -14,17 +14,21 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-
+    //Admin
     @PostMapping("/admin")
     public void createAdmin(@Valid @RequestBody CreateAdminRequest adminRequest){
         adminService.createAdmin(adminRequest);
     }
 
-    @GetMapping("/admin/{adminId}")
-    public Admin getAdmin(@PathVariable("adminId") int id){
+    //Admin- Give the details of the person who is requesting
+    @GetMapping("/admin")
+    public Admin getAdmin()
+    {
+        int id= 0;
         return adminService.getAdmin(id);
     }
 
+    //Admin
     @PostMapping("/admin/process")
     public void processRequest(@RequestBody ProcessRequest processRequest) throws Exception {
         adminService.processRequest(processRequest);
