@@ -36,7 +36,8 @@ public class StudentService {
                    @Value("${BOOK_INFO_AUTHORITY}") String BOOK_INFO_AUTHORITY,
                    @Value("{STUDENT_ONLY_AUTHORITY}") String STUDENT_ONLY_AUTHORITY,
                    @Value("{$authorities.delimiter}") String delimiter,
-                   PasswordEncoder passwordEncoder){
+                   PasswordEncoder passwordEncoder,
+                   StudentCacheRepository studentCacheRepository){
         this.studentRepository = studentRepository;
         this.userService = userService;
         this.requestService =requestService;
@@ -45,6 +46,7 @@ public class StudentService {
         this.BOOK_INFO_AUTHORITY =BOOK_INFO_AUTHORITY;
         this.STUDENT_ONLY_AUTHORITY =STUDENT_ONLY_AUTHORITY;
         this.passwordEncoder = passwordEncoder;
+        this.studentCacheRepository = studentCacheRepository;
     }
 
 
