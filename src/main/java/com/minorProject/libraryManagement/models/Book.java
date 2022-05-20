@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Book {
+public class Book implements Serializable { //Made serializable because Book is child object in Student and is not primitive datatype
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

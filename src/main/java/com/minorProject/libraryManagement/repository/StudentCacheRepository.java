@@ -16,7 +16,9 @@ public class StudentCacheRepository {
     private static final String KEY_PREFIX = "std::";
     private static final Integer KEY_EXPIRY = 20;
 
-    public void saveStudent(Student student){
+    public void saveStudent(Student student) throws Exception {
+        if(student.getId() == 0) //Since datatype of Id is in int and not in Integer
+            throw new Exception("Id not Present for the student");
         String key = getKey(student.getId());
         redisTemplate.opsForValue().set(key,student, KEY_EXPIRY, TimeUnit.MINUTES);
     }

@@ -3,13 +3,10 @@ package com.minorProject.libraryManagement.service;
 import com.minorProject.libraryManagement.Requests.PlaceRequest;
 import com.minorProject.libraryManagement.Requests.StudentCreateRequest;
 import com.minorProject.libraryManagement.models.Admin;
-import com.minorProject.libraryManagement.models.Request;
 import com.minorProject.libraryManagement.models.Student;
 import com.minorProject.libraryManagement.models.User;
-import com.minorProject.libraryManagement.repository.RequestRepository;
 import com.minorProject.libraryManagement.repository.StudentCacheRepository;
 import com.minorProject.libraryManagement.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,13 +51,43 @@ public class StudentService {
         User userFromRequest = studentRequest.toUser();
         attachAuthorities(userFromRequest);
         encodePassword(userFromRequest);
+
         User savedUser = userService.saveUser(userFromRequest);
 
-        studentRepository.save(studentRequest.to(savedUser));
+        Student student = studentRequest.to(savedUser);
+
+        //Save it in Database first then save it in cache
+        //Very Important line of code to retrieve student Id
+        student = studentRepository.save(student); //This is done to retrieve the student Id from database, or else studentId will populate as null
+        try{
+            studentCacheRepository.saveStudent(student);
+        }
+        catch (Exception e){
+            //Ignore it
+        }
     }
 
     public Student getStudentById(int id) {
-        return studentRepository.findById(id).orElse(null);
+        /*
+            1.Search in the cache, if found return from here itself, else go to the next steps
+            2.Get from db and save it in cache  //very important step(Saving in the cache)
+            3.Return thr retrieved object
+         */
+
+        Student student = studentCacheRepository.getStudent(id);
+
+        if(student != null)
+            return student;
+
+        student = studentRepository.findById(id).orElse(null);
+        if(student != null)
+            try {
+                studentCacheRepository.saveStudent(student);
+            }
+            catch (Exception e){
+                //Ignore it
+            }
+        return student;
     }
 
     public String placeRequest(PlaceRequest placeRequest, Integer studentId){
