@@ -1,6 +1,8 @@
 package com.minorProject.libraryManagement.models;
 
-public enum Genre {
+import java.io.Serializable;
+
+public enum Genre implements Serializable {
     HISTORY,
     GEOGRAPHY,
     TECHNOLOGY,

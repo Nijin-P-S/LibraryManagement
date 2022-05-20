@@ -1,6 +1,8 @@
 package com.minorProject.libraryManagement.models;
 
-public enum TransactionStatus {
+import java.io.Serializable;
+
+public enum TransactionStatus implements Serializable {
 
     PENDING,
     FAILED,

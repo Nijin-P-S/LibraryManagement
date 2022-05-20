@@ -1,6 +1,8 @@
 package com.minorProject.libraryManagement.models;
 
-public enum RequestStatus {
+import java.io.Serializable;
+
+public enum RequestStatus implements Serializable {
     PENDING,
     ACCEPTED,
     REJECTED
