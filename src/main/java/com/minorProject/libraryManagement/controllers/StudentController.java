@@ -19,7 +19,16 @@ public class StudentController {
     StudentService studentService;
 
     //Not authenticated
-    @PostMapping("/student")
+    /*
+        Updated to GetMapping from PostMapping as GetMapping is safe method and anything that make changes to values in
+        database(POST Mapping, PUT Mapping, DELETE Mapping etc) are considered to be unsafe methods in http context.
+
+        For unsafe methods with authentication disable, we need to disable CSRF token.
+
+        For this, we need to use csrf.disable() in antmatchers(), which leads to our program vulnerable to csrf attacks
+
+     */
+    @GetMapping("/student_create")
     public void createStudent(@Valid @RequestBody StudentCreateRequest studentRequest){
         studentService.createStudent(studentRequest);
     }

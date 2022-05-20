@@ -6,6 +6,8 @@ import com.minorProject.libraryManagement.Responses.ProcessResponse;
 import com.minorProject.libraryManagement.models.*;
 import com.minorProject.libraryManagement.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,21 +18,40 @@ public class AdminService {
     private static final String REJECTED_STATUS = "REJECTED";
     private static final String APPROVED_STATUS = "APPROVED";
 
-    @Autowired
-    AdminRepository adminRepository;
 
-    @Autowired
-    RequestService requestService;
+    private final String ADMIN_AUTHORITY;
+    private final String BOOK_INFO_AUTHORITY;
+    private final String STUDENT_INFO_AUTHORITY;
+    private final String delimiter;
+    private final AdminRepository adminRepository;
+    private final RequestService requestService;
+    private final TransactionService transactionService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    TransactionService transactionService;
-
-    @Autowired
-    UserService userService;
+    AdminService(UserService userService, TransactionService transactionService,
+                              RequestService requestService, AdminRepository adminRepository,
+                              @Value("{$authorities.delimiter}") String delimiter,
+                              @Value("${STUDENT_INFO_AUTHORITY}") String STUDENT_INFO_AUTHORITY,
+                              @Value("${BOOK_INFO_AUTHORITY}") String BOOK_INFO_AUTHORITY,
+                              @Value("${ADMIN_AUTHORITY}") String ADMIN_AUTHORITY,
+                              PasswordEncoder passwordEncoder){
+        this.userService = userService;
+        this.transactionService = transactionService;
+        this.requestService = requestService;
+        this.adminRepository = adminRepository;
+        this.delimiter = delimiter;
+        this.STUDENT_INFO_AUTHORITY = STUDENT_INFO_AUTHORITY;
+        this.BOOK_INFO_AUTHORITY = BOOK_INFO_AUTHORITY;
+        this.ADMIN_AUTHORITY = ADMIN_AUTHORITY;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void createAdmin(CreateAdminRequest createAdminRequest) {
-
-        User savedUser = userService.saveUser(createAdminRequest.toUser());
+        User userFromRequest = createAdminRequest.toUser();
+        attachAuthorities(userFromRequest);
+        encodePassword(userFromRequest);
+        User savedUser = userService.saveUser(userFromRequest);
 
         adminRepository.save(createAdminRequest.to(savedUser));
     }
@@ -80,5 +101,14 @@ public class AdminService {
                 .requestStatus(RequestStatus.ACCEPTED)
                 .adminComment(processRequest.getComment())
                 .build();
+    }
+
+    private void attachAuthorities(User user){
+        String authorities = BOOK_INFO_AUTHORITY + delimiter + ADMIN_AUTHORITY + delimiter + STUDENT_INFO_AUTHORITY;
+        user.setAuthorities(authorities);
+    }
+
+    private void encodePassword(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
     }
 }

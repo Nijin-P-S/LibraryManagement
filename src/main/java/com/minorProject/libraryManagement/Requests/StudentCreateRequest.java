@@ -15,14 +15,15 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class StudentCreateRequest {
 
-    @Value("${BOOK_INFO_AUTHORITY}")
-    private String BOOK_INFO_AUTHORITY;
-
-    @Value("{STUDENT_ONLY_AUTHORITY}")
-    private String STUDENT_ONLY_AUTHORITY;
-
-    @Value("{$authorities.delimiter}")
-    private String delimiter;
+    //This will give as Null , as the class is not a bean
+//    @Value("${BOOK_INFO_AUTHORITY}")
+//    private String BOOK_INFO_AUTHORITY;
+//
+//    @Value("{STUDENT_ONLY_AUTHORITY}")
+//    private String STUDENT_ONLY_AUTHORITY;
+//
+//    @Value("{$authorities.delimiter}")
+//    private String delimiter;
 
     @NotNull
     private String username;
@@ -56,7 +57,7 @@ public class StudentCreateRequest {
         return User.builder()
                 .username(this.username)
                 .password(this.password)
-                .authorities(BOOK_INFO_AUTHORITY+delimiter+STUDENT_ONLY_AUTHORITY)
+//                .authorities(BOOK_INFO_AUTHORITY+delimiter+STUDENT_ONLY_AUTHORITY)
                 .build();
     }
 }

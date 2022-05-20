@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Student extends User{
+public class Student{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Student extends User{
 
     @OneToOne
     @JoinColumn
-    @JsonIgnoreProperties("student")
+    @JsonIgnoreProperties({"student", "admin", "password"})
     private User user;
 
 }

@@ -2,7 +2,6 @@ package com.minorProject.libraryManagement.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,12 +31,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Value("{$authorities.delimiter}")
-    private String delimiter;
+//    @Value("{$authorities.delimiter}")
+//    private String delimiter;
+
+    private static final String delimiter = ":";
 
     @Column(unique = true, nullable = false)
     private String username;
+
     private String password;
+
     private String authorities;
 
     @Override

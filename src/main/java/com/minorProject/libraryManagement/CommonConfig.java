@@ -54,7 +54,7 @@ public class CommonConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/book/**").hasAuthority(BOOK_INFO_AUTHORITY)
                 .antMatchers(HttpMethod.POST, "/book/**").hasAuthority(ADMIN_AUTHORITY)
                 .antMatchers("studentById/**").hasAuthority(STUDENT_INFO_AUTHORITY)  //Can implement GET, PUT, DELETE operations
-                .antMatchers(HttpMethod.POST,"/student/**").permitAll()
+                .antMatchers("/student_create/**").permitAll()
                 .antMatchers("/user/**").hasAuthority(STUDENT_ONLY_AUTHORITY)
                 .antMatchers("/**").permitAll()
                 .and()

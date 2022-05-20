@@ -15,17 +15,18 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class CreateAdminRequest {
 
-    @Value("${ADMIN_AUTHORITY}")
-    private String ADMIN_AUTHORITY;
-
-    @Value("${BOOK_INFO_AUTHORITY}")
-    private String BOOK_INFO_AUTHORITY;
-
-    @Value("${STUDENT_INFO_AUTHORITY}")
-    private String STUDENT_INFO_AUTHORITY;
-
-    @Value("{$authorities.delimiter}")
-    private String delimiter;
+    //This all will give as NULL as the class is not a bean
+//    @Value("${ADMIN_AUTHORITY}")
+//    private String ADMIN_AUTHORITY;
+//
+//    @Value("${BOOK_INFO_AUTHORITY}")
+//    private String BOOK_INFO_AUTHORITY;
+//
+//    @Value("${STUDENT_INFO_AUTHORITY}")
+//    private String STUDENT_INFO_AUTHORITY;
+//
+//    @Value("{$authorities.delimiter}")
+//    private String delimiter;
 
     @NotNull
     private String username;
@@ -56,9 +57,9 @@ public class CreateAdminRequest {
         return User.builder()
                 .username(this.username)
                 .password(this.password)
-                .authorities(BOOK_INFO_AUTHORITY+delimiter+
-                        ADMIN_AUTHORITY+delimiter+
-                        STUDENT_INFO_AUTHORITY)
+//                .authorities(BOOK_INFO_AUTHORITY+delimiter+
+//                        ADMIN_AUTHORITY+delimiter+
+//                        STUDENT_INFO_AUTHORITY)
                 .build();
     }
 }
